@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Box,
@@ -33,6 +33,19 @@ const CustomField = (props: CustomFieldProps) => {
   const handleDialogOpen = () => {
     setDialogOpen(true);
     console.log("Logging selected Record for Order History", selectedRecord);
+   
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    setPage(1);
+  };
+
+  useEffect(() => {
     const IVR = {
       IVRKey: ivrKey,
     };
@@ -57,16 +70,7 @@ const CustomField = (props: CustomFieldProps) => {
     };
 
     fetchData();
-  };
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
-
-  const handleOrderClick = (order) => {
-    setSelectedOrder(order);
-    setPage(1);
-  };
+  }, [])
 
   if (loading) {
     return (
@@ -83,17 +87,19 @@ const CustomField = (props: CustomFieldProps) => {
     );
   }
 
+  console.log("Logging all about orders", orders, orders.length);
+
   return (
     <Box>
       <Button
         fullWidth
         onClick={handleDialogOpen}
         style={{
-          background: "#225c79",
+          background: "#5E6541",
           color: "white",
         }}
-      >
-        Order History
+       >
+        Order History({orders.length})
       </Button>
       <Dialog
         open={dialogOpen}
@@ -109,8 +115,20 @@ const CustomField = (props: CustomFieldProps) => {
         }}
       >
         <DialogTitle style={{ backgroundColor: "#246382", color: "white" }}>
-          Order History
+          <Box
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography>Order History</Typography>
+            <Typography>
+              <strong>{orders[0]?.PatientValue}</strong>
+            </Typography>
+          </Box>
         </DialogTitle>
+
 
         <DialogContent
           style={{ maxWidth: "100%", overflowX: "hidden", padding: "10px" }}
@@ -124,95 +142,109 @@ const CustomField = (props: CustomFieldProps) => {
               >
                 Orders
               </Typography>
-              <Box
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "0 30px", // Add padding to align with list items
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  style={{ width: "150px", margin: 0, padding: 10 }}
-                >
-                  <strong>Date</strong>
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ width: "100px", margin: 0, padding: 10 }}
-                >
-                  <strong>Status</strong>
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ width: "150px", margin: 0, padding: 10 }}
-                >
-                  <strong>Address</strong>
-                </Typography>
-                <Typography
-                  variant="body1"
-                  style={{ width: "100px", margin: 0, padding: 10 }}
-                >
-                  <strong>Total Amount</strong>
-                </Typography>
-              </Box>
-              <List>
-                {orders?.map((order, index) => (
-                  <ListItemButton
-                    key={index}
-                    onClick={() => handleOrderClick(order)}
-                    sx={{
-                      borderBottom: "1px solid #00000033",
-                      "&.Mui-selected": {
-                        backgroundColor: "#F4F8D0",
-                        color: "black",
-                        "&:hover": {
-                          backgroundColor: "lightblue",
-                        },
-                      },
-                      padding: "0 30px", // Ensure padding matches header
+              {orders.length > 0 ? (
+                <Box>
+                  <Box
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "0 30p x", // Add padding to align with list items
                     }}
                   >
-                    <Box
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                    <Typography
+                      variant="body1"
+                      style={{ width: "150px", margin: 0, padding: 10 }}
                     >
-                      <Typography
-                        variant="body1"
-                        style={{ width: "150px", margin: 0, padding: 10 }}
-                      >
-                        {order?.DateText}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        style={{ width: "100px", margin: 0, padding: 10 }}
-                      >
-                        {order?.Status}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        style={{ width: "150px", margin: 0, padding: 10 }}
-                      >
-                        {order?.ShippingAddress}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        style={{ width: "100px", margin: 0, padding: 10 }}
-                      >
-                        {order?.Amount}
-                      </Typography>
-                    </Box>
-                  </ListItemButton>
-                ))}
-              </List>
+                      <strong>Date</strong>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      style={{ width: "100px", margin: 0, padding: 10 }}
+                    >
+                      <strong>Status</strong>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      style={{  width: "150px", margin: 0, padding: 10 }}
+                    >
+                      <strong>Address</strong>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      style={{ width: "100px", margin: 0, padding: 10 }}
+                    >
+                      <strong>Total Amount</strong>
+                    </Typography>
+                  </Box>
+                  <List>
+                    {orders.length > 0 ? (
+                      orders?.map((order, index) => (
+                        <ListItemButton
+                          key={index}
+                          onClick={() => handleOrderClick(order)}
+                          sx={{
+                            borderBottom: "1px solid #00000033",
+                            "&.Mui-selected": {
+                              backgroundColor: "#F4F8D0",
+                              color: "black",
+                              "&:hover": {
+                                backgroundColor: "lightblue",
+                              },
+                            },
+                            padding: "0 30px", // Ensure padding matches header
+                          }}
+                        >
+                          <Box
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography
+                              variant="body1"
+                              style={{ width: "150px", margin: 0, padding: 10 }}
+                            >
+                              {order?.DateText}
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              style={{ width: "100px", margin: 0, padding: 10 }}
+                            >
+                              {order?.Status}
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              style={{ width: "150px", margin: 0, padding: 10 }}
+                            >
+                              {order?.ShippingAddress}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              style={{ width: "100px", margin: 0, padding: 10 }}
+                            >
+                              {order?.Amount}
+                            </Typography>
+                          </Box>
+                        </ListItemButton>
+                      ))
+                    ) : (
+                      <Box style={{ width: "100%", textAlign: "center" }}>
+                        
+                      </Box>
+                    )}
+                  </List>
+                </Box>
+              ) : (
+                <Box style={{ width: "100%", textAlign: "center" }}>
+                  <Typography variant="h6">No Orders Found</Typography>
+                </Box>
+              )}
               <Box display="flex" justifyContent="center" width="100%">
                 <Button
                   onClick={handleDialogClose}

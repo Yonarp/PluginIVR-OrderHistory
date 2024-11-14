@@ -21,7 +21,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
     { product: "", price: 0, qty: 1, discount: 0, amount: 0 },
   ]);
 
-  const [page, setPage] = useState(1);
+
   const [selectedAddress, setSelectedAddress] = useState("");
   const [addressName, setAddressName] = useState(null);
   const [fullAddress, setFullAddress] = useState(null);
@@ -33,6 +33,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
       IVR: IVR,
     };
     const fetchData = async () => {
+     
       await five.executeFunction(
         "getIVRDetails",
         //@ts-ignore
@@ -40,7 +41,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
         null,
         null,
         null,
-        (result) => {
+        async (result) => {
           console.log("Logging Order");
           const response = JSON.parse(result.serverResponse.results);
           console.log(response);
@@ -53,6 +54,21 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
           setAddressName(primaryAddress?.AddressName);
           setFullAddress(primaryAddress);
           setLoading(false);
+
+          const logObject = {
+            ORD: order.___ORD,
+            ivr: response.ivr,
+            type: "Order"
+          }
+    
+          await five.executeFunction(
+            "TriggerOpenIVRLog",
+            logObject,
+            null,
+            null,
+            null,
+            async (result) => {}
+          );
         }
       );
 
@@ -74,13 +90,33 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
           setOrderLines(response);
         }
       );
+
+ 
+
+      await five.executeFunction(
+        "getOrderLines",
+        //@ts-ignore
+        orderObj,
+        null,
+        null,
+        null,
+        (result) => {
+          console.log("Logging Order Lines");
+          const response = JSON.parse(result.serverResponse.results);
+          console.log(response);
+          setOrderLines(response);
+        }
+      );
     };
+
+    
+
+
 
     fetchData();
   }, []);
 
   const handleDialog = () => {
-    handleDialogClose();
     setPage(0);
   };
 
@@ -160,25 +196,25 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
               <TableCell component="th" scope="row">
                 <strong>Address Street:</strong>
               </TableCell>
-              <TableCell>{order?.ShippingAddressStreet}</TableCell>
+              <TableCell>{fullAddress?.AddressStreet}</TableCell>
               <TableCell component="th" scope="row">
-                <strong> Appartment:</strong>
+                <strong> Suite:</strong>
               </TableCell>
-              <TableCell>{order?.ShippingAddressStreet2}</TableCell>
+              <TableCell>{fullAddress?.AddressStreet2}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
                 <strong>City:</strong>
               </TableCell>
-              <TableCell>{order?.ShippingAddressCity}</TableCell>
+              <TableCell>{fullAddress?.AddressCity}</TableCell>
               <TableCell component="th" scope="row">
                 <strong>State:</strong>
               </TableCell>
-              <TableCell>{order?.ShippingAddressState}</TableCell>
+              <TableCell>{fullAddress?.AddressState}</TableCell>
               <TableCell component="th" scope="row">
                 <strong> Zip:</strong>
               </TableCell>
-              <TableCell>{order?.ShippingAddressZip}</TableCell>
+              <TableCell>{fullAddress?.AddressZip}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -239,12 +275,12 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
           onClick={handleDialog}
           style={{
             width: "15vw",
-            backgroundColor: "#780000",
+            backgroundColor: "#1e546e",
             color: "white",
             marginTop: "10px",
           }}
         >
-          Close
+          Back
       </Button>
         {/* @ts-ignore */}
       </Box>
