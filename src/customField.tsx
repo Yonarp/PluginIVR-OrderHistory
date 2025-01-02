@@ -114,7 +114,7 @@ const CustomField = (props: CustomFieldProps) => {
           },
         }}
       >
-        <DialogTitle style={{ backgroundColor: "#246382", color: "white" }}>
+        <DialogTitle style={{ backgroundColor: "#15706A", color: "white" }}>
           <Box
             style={{
               width: "100%",
@@ -250,7 +250,7 @@ const CustomField = (props: CustomFieldProps) => {
                   onClick={handleDialogClose}
                   style={{
                     width: "15vw",
-                    backgroundColor: "#780000",
+                    backgroundColor: "#14706A",
                     color: "white",
                     marginTop: "10px",
                   }}
