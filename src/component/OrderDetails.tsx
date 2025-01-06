@@ -275,7 +275,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
           onClick={handleDialog}
           style={{
             width: "15vw",
-            backgroundColor: "#1e546e",
+            backgroundColor: "#14706A",
             color: "white",
             marginTop: "10px",
           }}
