@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
   Box,
   Button,
@@ -32,8 +31,6 @@ const CustomField = (props: CustomFieldProps) => {
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
-    console.log("Logging selected Record for Order History", selectedRecord);
-   
   };
 
   const handleDialogClose = () => {
@@ -60,9 +57,9 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         (result) => {
-          console.log("Logging Order History");
+        
           const response = JSON.parse(result?.serverResponse?.results);
-          console.log(response);
+     
           setOrders(response.response.value);
           setLoading(false);
         }
@@ -82,12 +79,12 @@ const CustomField = (props: CustomFieldProps) => {
           alignItems: "center",
         }}
       >
+      
         <CircularProgress />
       </Container>
     );
   }
 
-  console.log("Logging all about orders", orders, orders.length);
 
   return (
     <Box>

@@ -151,7 +151,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
               <TableCell component="th" scope="row">
                 <strong>Wound Size (CM²):</strong>
               </TableCell>
-              <TableCell>{data?.ivr?.WoundSize}</TableCell>
+              <TableCell>{data?.ivr?.WoundSizeCalc}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -171,7 +171,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
               <TableCell component="th" scope="row">
                 <strong>Date Of Service:</strong>
               </TableCell>
-              <TableCell>{data?.ivr?.Date}</TableCell>
+              <TableCell>{data?.ivr?.DateOfBirth}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
