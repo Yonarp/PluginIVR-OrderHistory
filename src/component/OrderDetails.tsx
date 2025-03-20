@@ -28,12 +28,15 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
   const [orderLines, setOrderLines] = useState([]);
 
   useEffect(() => {
+
     setLoading(true);
+
     const ivrObject = {
       IVR: IVR,
     };
-    const fetchData = async () => {
-     
+
+    console.log("Order from order", order)
+    const fetchData = async () => { 
       await five.executeFunction(
         "getIVRDetails",
         //@ts-ignore
@@ -42,9 +45,8 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
         null,
         null,
         async (result) => {
-          console.log("Logging Order");
+        
           const response = JSON.parse(result.serverResponse.results);
-          console.log(response);
           setData(response);
           setProductList(response.productList);
           const primaryAddress = response.address.find(
@@ -84,9 +86,9 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
         null,
         null,
         (result) => {
-          console.log("Logging Order Lines");
+       
           const response = JSON.parse(result.serverResponse.results);
-          console.log(response);
+     
           setOrderLines(response);
         }
       );
@@ -101,9 +103,9 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
         null,
         null,
         (result) => {
-          console.log("Logging Order Lines");
+   
           const response = JSON.parse(result.serverResponse.results);
-          console.log(response);
+     
           setOrderLines(response);
         }
       );
@@ -171,7 +173,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
               <TableCell component="th" scope="row">
                 <strong>Date Of Service:</strong>
               </TableCell>
-              <TableCell>{data?.ivr?.DateOfBirth}</TableCell>
+              <TableCell>{order?.DateService}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">

@@ -20,7 +20,7 @@ FiveInitialize();
 const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const { theme, value, onValueUpdated, variant, five, selectedRecord } = props;
-  const ivrKey = selectedRecord.data?.IVR;
+  const ivrKey = selectedRecord?.data?.IVR
   const [dialogOpen, setDialogOpen] = useState(false);
   //@ts-ignore
   const [loading, setLoading] = useState(false);
@@ -44,9 +44,9 @@ const CustomField = (props: CustomFieldProps) => {
 
   useEffect(() => {
     const IVR = {
-      IVRKey: ivrKey,
+      IVRKey: selectedRecord?.data?.IVR,
     };
-
+    
     const fetchData = async () => {
       setLoading(true);
       await five.executeFunction(
@@ -57,9 +57,8 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         (result) => {
-        
           const response = JSON.parse(result?.serverResponse?.results);
-     
+          console.log("Showing response when we get orders", response);
           setOrders(response.response.value);
           setLoading(false);
         }
@@ -67,7 +66,7 @@ const CustomField = (props: CustomFieldProps) => {
     };
 
     fetchData();
-  }, [])
+  }, [selectedRecord?.data?.IVR])
 
   if (loading) {
     return (
@@ -155,7 +154,7 @@ const CustomField = (props: CustomFieldProps) => {
                       variant="body1"
                       style={{ width: "150px", margin: 0, padding: 10 }}
                     >
-                      <strong>Date</strong>
+                      <strong>Order Date</strong>
                     </Typography>
                     <Typography
                       variant="body1"
@@ -207,7 +206,7 @@ const CustomField = (props: CustomFieldProps) => {
                               variant="body1"
                               style={{ width: "150px", margin: 0, padding: 10 }}
                             >
-                              {order?.DateText}
+                              {order?.zCreationDate}
                             </Typography>
                             <Typography
                               variant="body1"
