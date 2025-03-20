@@ -147,7 +147,7 @@ const OrderDetails = ({ order, five, IVR, handleDialogClose, setPage }) => {
               <TableCell component="th" scope="row">
                 <strong>Products:</strong>
               </TableCell>
-              <TableCell>{"Zenith-Q4523"}</TableCell>
+              <TableCell>{data?.product?.Brand + "-" + data?.product?.QCode}</TableCell>
               <TableCell component="th" scope="row">
                 <strong>Wound Size (CM²):</strong>
               </TableCell>
